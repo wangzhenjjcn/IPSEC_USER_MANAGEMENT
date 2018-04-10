@@ -31,9 +31,16 @@ public class PrimaryConfiguration {
 	private String passwdEncodePre;
 	@Value("${vpn.tmpPath}")
 	private String tmpPath;
-	
 	@Value("${vpn.servername}")
 	private String serverName;
+	@Value("${weixin.compAppId}")
+	private String compAppId;
+	@Value("${weixin.compAppSecret}")
+	private String compAppSecret;
+	@Value("${encode.token}")
+	private String encodeToken;
+	@Value("${encode.key}")
+	private String encodeKey;
 	
 	
 	
@@ -143,5 +150,37 @@ public class PrimaryConfiguration {
 
 	public void setServerName(String serverName) {
 		this.serverName = serverName;
+	}
+
+	public String getCompAppId() {
+		return compAppId;
+	}
+
+	public void setCompAppId(String compAppId) {
+		this.compAppId = compAppId;
+	}
+
+	public String getCompAppSecret() {
+		return compAppSecret;
+	}
+
+	public void setCompAppSecret(String compAppSecret) {
+		this.compAppSecret = compAppSecret;
+	}
+
+	public String getEncodeToken() {
+		return encodeToken;
+	}
+
+	public void setEncodeToken(String encodeToken) {
+		this.encodeToken = encodeToken;
+	}
+
+	public String getEncodeKey() {
+		return encodeKey;
+	}
+
+	public void setEncodeKey(String encodeKey) {
+		this.encodeKey = encodeKey;
 	}
 }

@@ -9,26 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MyazureDataServiceImpl implements MyazureDataService  {
+public class MyazureDataServiceImpl implements MyazureDataService {
 	@Autowired
 	private PrimaryConfiguration primaryConfiguration;
 
 	@Autowired
 	private final MyazureDataRepository myazureDataRepository;
-	
+
 	@Autowired
-	public MyazureDataServiceImpl(PrimaryConfiguration primaryConfiguration,MyazureDataRepository myazureDataRepository) {
+	public MyazureDataServiceImpl(PrimaryConfiguration primaryConfiguration,
+			MyazureDataRepository myazureDataRepository) {
 		this.primaryConfiguration = primaryConfiguration;
-		this.myazureDataRepository=myazureDataRepository;
+		this.myazureDataRepository = myazureDataRepository;
 	}
 
 	@Override
 	public String getValue(String key) {
-		MyazureData  data=myazureDataRepository.findOneByMkey(key);
-		if (data==null) {
+		MyazureData data = myazureDataRepository.findOneByMkey(key);
+		if (data == null) {
 			return null;
 		}
-		String resault =data.getMvalue();
+		String resault = data.getMvalue();
 		return resault;
 	}
 
@@ -41,21 +42,23 @@ public class MyazureDataServiceImpl implements MyazureDataService  {
 	public MyazureData save(MyazureData myazureData) {
 		return myazureDataRepository.save(myazureData);
 	}
-	
+
 	@Override
-	public MyazureData save(String key,String value) {
-		return myazureDataRepository.save(new MyazureData(key,value));
+	public MyazureData save(String key, String value) {
+		return myazureDataRepository.save(new MyazureData(key, value));
 	}
 
 	@Override
-	public List<MyazureData> findMyazureDataByMkeyStartingWith(String keyPreString) {
+	public List<MyazureData> findMyazureDataByMkeyStartingWith(
+			String keyPreString) {
 		return myazureDataRepository.findByMkeyStartingWith(keyPreString);
 	}
 
 	@Override
 	public List<MyazureData> deleteAllMyazureDatasByKeyStartWith(
 			String keyPreString) {
-		List<MyazureData>  dataTodelete=myazureDataRepository.findByMkeyStartingWith(keyPreString);
+		List<MyazureData> dataTodelete = myazureDataRepository
+				.findByMkeyStartingWith(keyPreString);
 		for (MyazureData myazureData : dataTodelete) {
 			myazureDataRepository.delete(myazureData.getMkey());
 		}
@@ -64,34 +67,47 @@ public class MyazureDataServiceImpl implements MyazureDataService  {
 
 	@Override
 	public String getIDValue(String iDkey, String key) {
-		MyazureData  data=myazureDataRepository.findOneByMkey(iDkey.replace("ID", key));
-		if (data==null) {
+		MyazureData data = myazureDataRepository.findOneByMkey(iDkey.replace(
+				"ID", key));
+		if (data == null) {
 			return null;
 		}
-		String resault =data.getMvalue();
+		String resault = data.getMvalue();
 		return resault;
 	}
+
 	@Override
 	public String getIDValue(String iDkey, Integer key) {
-		MyazureData  data=myazureDataRepository.findOneByMkey(iDkey.replace("ID", key+""));
-		if (data==null) {
+		MyazureData data = myazureDataRepository.findOneByMkey(iDkey.replace(
+				"ID", key + ""));
+		if (data == null) {
 			return null;
 		}
-		String resault =data.getMvalue();
+		String resault = data.getMvalue();
 		return resault;
 	}
+
 	@Override
-	public String getKeyPreValue(String preKey, String key) {
-		MyazureData  data=myazureDataRepository.findOneByMkey(preKey+ key);
-		if (data==null) {
+	public String getPreKeyValue(String preKey, String key) {
+		MyazureData data = myazureDataRepository.findOneByMkey(preKey + key);
+		if (data == null) {
 			return null;
 		}
-		String resault =data.getMvalue();
+		String resault = data.getMvalue();
 		return resault;
 	}
 
 	@Override
 	public MyazureData save(String key, Integer value) {
-		return myazureDataRepository.save(new MyazureData(key,value+""));
+		return myazureDataRepository.save(new MyazureData(key, value + ""));
+	}
+
+	@Override
+	public void delete(String key) {
+		MyazureData data = myazureDataRepository.findOneByMkey(key);
+		if (data == null) {
+			return;
+		}
+		myazureDataRepository.delete(key);
 	}
 }

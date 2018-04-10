@@ -8,15 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TrafficData {
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(TrafficData.class);
 
-	private String username;
-	private String connetIp;
-	private String dataOut;
-	private String dataIn;
-	private String connetTime;
-	private String linkId;
+	private String username="";
+	private String connetIp="0.0.0.0";
+	private String dataOut="0";
+	private String dataIn="0";
+	private String connetTime="";
+	private String linkId="0";
 
 	public TrafficData() {
 
@@ -69,6 +70,7 @@ public class TrafficData {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	public String getUsername() {
@@ -124,7 +126,7 @@ public class TrafficData {
 		strb.append("ID:").append(linkId).append(" ").append("XAUTHuser=")
 				.append(username).append(" ").append("IP:").append(connetIp)
 				.append(" ").append("IN:").append(dataIn).append(" ")
-				.append("OUT:").append(dataOut).append(" ").append("TIME:")
+				.append("OUT:").append(dataOut).append(" ").append("CONTIME:")
 				.append(connetTime);
 		return strb.toString();
 	}

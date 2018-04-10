@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
@@ -68,14 +70,14 @@ public class MessageUtil {
 	// 响应消息类型：图文
 	public static final String RESP_MESSAGE_TYPE_NEWS = "news";
 
+	@SuppressWarnings("unused")
 	private static XStream xstream = new XStream(new XppDriver() {
 		public HierarchicalStreamWriter createWriter(Writer out) {
 			return new PrettyPrintWriter(out) {
 				// 对所有xml节点的转换都增加CDATA标记
 				boolean cdata = true;
 
-				@SuppressWarnings("unchecked")
-				public void startNode(String name, Class clazz) {
+				public void startNode(String name, @SuppressWarnings("rawtypes") Class clazz) {
 					super.startNode(name, clazz);
 				}
 
@@ -128,6 +130,7 @@ public class MessageUtil {
 		try {
 			document = reader.read(sr);
 			Element root = document.getRootElement();
+			@SuppressWarnings("unchecked")
 			List<Element> elementList = root.elements();
 			for (Element e : elementList)
 				map.put(e.getName(), e.getText());

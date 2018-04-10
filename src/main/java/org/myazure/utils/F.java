@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class F {
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory.getLogger(F.class);
 
 	public F() {

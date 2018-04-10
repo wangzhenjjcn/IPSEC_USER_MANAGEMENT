@@ -1,6 +1,5 @@
 package org.myazure.vpn.schedule;
 
-import java.sql.Date;
 
 import org.myazure.vpn.configuration.PrimaryConfiguration;
 import org.myazure.vpn.controller.VPNTrafficeController;
@@ -21,6 +20,7 @@ public class ScheduleMananger {
 	VPNUserController vpnUserController;
 	@Autowired
 	VPNTrafficeController vpnTrafficeController;
+	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ScheduleMananger.class);
 
@@ -33,38 +33,29 @@ public class ScheduleMananger {
 
 	@Scheduled(cron = "0/1 * *  * * ? ")
 	protected void secScanner() {
-		System.out.print(".");
 	}
 	
 	@Scheduled(cron = "0/30 * *  * * ? ")
 	protected void thirtySecScanner() {
-		System.out.println("$");
 	}
 
 	@Scheduled(cron = "0 0/1 *  * * ? ")
 	protected void minScanner() {
-		System.out.println("!");
 	}
 	@Scheduled(cron = "0 0/10 *  * * ? ")
 	protected void tenMinScanner() {
-		System.out.println("~");
 		vpnTrafficeController.readTrafficNow();
 	}
 	@Scheduled(cron = "0 0/30 *  * * ? ")
 	protected void halfHourScanner() {
-		System.out.println("~");
-		vpnTrafficeController.trafficStatisticsAllusers();
+		vpnTrafficeController. readAllUserUsage();
 	}
 	@Scheduled(cron = "0 0 0/1  * * ? ")
 	protected void hourScanner() {
-		System.out.println("#");
-		vpnTrafficeController.readTrafficHistory();
 	}
 
 	@Scheduled(cron = "0 0 0 0/1 * ? ")
 	protected void daylyScanner() {
-		System.out.println("&");
-		vpnUserController.readAllUser();
 	}
 	
 	

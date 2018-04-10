@@ -5,6 +5,7 @@ public class S {
 
 	}
 
+	@SuppressWarnings("unused")
 	public static String toStroageString(long data) {
 		int unit = 0;
 		long userdata = data;

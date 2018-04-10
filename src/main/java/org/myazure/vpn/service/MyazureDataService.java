@@ -15,5 +15,6 @@ public interface MyazureDataService {
 	public List<MyazureData> deleteAllMyazureDatasByKeyStartWith(String keyPreString);
 	public String getIDValue(String iDkey,String key);
 	public String getIDValue(String iDkey,Integer key);
-	public String getKeyPreValue(String preKey,String key);
+	public String getPreKeyValue(String preKey,String key);
+	public void delete(String key);
 }
