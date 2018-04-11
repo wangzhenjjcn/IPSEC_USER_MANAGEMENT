@@ -2,6 +2,7 @@ package org.myazure.vpn.response;
 
 import java.util.List;
 
+import org.myazure.response.StatusResponse;
 import org.myazure.vpn.entity.UserData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

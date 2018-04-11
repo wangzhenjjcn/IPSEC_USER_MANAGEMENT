@@ -1,6 +1,6 @@
 package org.myazure.vpn;
 
-import org.myazure.vpn.configuration.MyazureEmbeddedServletContainerCustomizer;
+import org.myazure.configuration.MyazureEmbeddedServletContainerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

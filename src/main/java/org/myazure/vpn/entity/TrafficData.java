@@ -7,20 +7,21 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
+
 public class TrafficData {
 	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(TrafficData.class);
 
-	private String username="";
-	private String connetIp="0.0.0.0";
-	private String dataOut="0";
-	private String dataIn="0";
-	private String connetTime="";
-	private String linkId="0";
+	private String username = "";
+	private String connetIp = "0.0.0.0";
+	private String dataOut = "0";
+	private String dataIn = "0";
+	private String connetTime = "";
+	private String linkId = "0";
 
 	public TrafficData() {
-
 	}
 
 	@SuppressWarnings("deprecation")
@@ -69,6 +70,15 @@ public class TrafficData {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if (trafficDataLine.contains("connetIp")) {
+			TrafficData data = JSON.parseObject(trafficDataLine,
+					TrafficData.class);
+			this.username = data.username;
+			this.connetIp = data.connetIp;
+			this.dataOut = data.dataOut;
+			this.dataIn = data.dataIn;
+			this.connetTime = data.connetTime;
+			this.linkId = data.linkId;
 		}
 
 	}

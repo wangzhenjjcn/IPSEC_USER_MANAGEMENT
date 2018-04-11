@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.myazure.configuration.PrimaryConfiguration;
+import org.myazure.service.MyazureDataService;
 import org.myazure.utils.F;
 import org.myazure.utils.L;
 import org.myazure.utils.S;
-import org.myazure.vpn.configuration.PrimaryConfiguration;
 import org.myazure.vpn.domain.MyazureData;
 import org.myazure.vpn.entity.TrafficData;
 import org.myazure.vpn.entity.UserData;
-import org.myazure.vpn.service.MyazureDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,6 @@ public class VPNTrafficeController {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(VPNTrafficeController.class);
-	// public static Map<String, String> userTrafficDataMap = new
-	// HashMap<String, String>();
 	public static List<TrafficData> trafficingDatas = new ArrayList<TrafficData>();
 
 	public VPNTrafficeController() {
@@ -49,8 +47,10 @@ public class VPNTrafficeController {
 					continue;
 				}
 				TrafficData data = new TrafficData(string);
-				myazureDataService.save(new MyazureData(data.getUsername()
-						+ "_" + data.getConnetTime(), JSON.toJSONString(data)));
+				myazureDataService
+						.save(new MyazureData("ESP_TrafficInformation_"
+								+ data.getUsername() + "_"
+								+ data.getConnetTime(), JSON.toJSONString(data)));
 			}
 		} catch (Exception e) {
 			LOG.debug("Run this [" + saveHistoryCommand + "] Err");
@@ -73,55 +73,38 @@ public class VPNTrafficeController {
 				TrafficData data = new TrafficData(string);
 				trafficingDatas.add(data);
 			}
-			readTrafficHistory();
 		} catch (Exception e) {
 			LOG.debug("Run this [" + saveTrafficCommand + "] Err");
 		}
+		readTrafficHistory();
 	}
 
-	public Map<String, UserData> readAllUserUsage() {
-		Map<String, UserData> usageData = new HashMap<String, UserData>();
+	public Map<String, UserData> calculateAllUserData() {
+		readTrafficNow();
+		Map<String, UserData> userData = new HashMap<String, UserData>();
 		for (String string : VPNUserController.userList) {
-			usageData.put(string, getUserTrafficData(string));
+			userData.put(string, calculateUserTrafficData(string));
 		}
-		VPNUserController.users = usageData;
-		return usageData;
+		VPNUserController.users = userData;
+		return userData;
 	}
 
-	private UserData getUserTrafficData(String username) {
+	private UserData calculateUserTrafficData(String username) {
 		UserData userdata = new UserData(username, 0, 0, 0);
-		List<MyazureData> userdatas = myazureDataService
-				.findMyazureDataByMkeyStartingWith(username + "_");
 		long allPurchasedData = getUserPurchaseData(username);
-
-		MyazureData userActiveData = myazureDataService
-				.getMyazureData("USER_ACTIVE_" + username);
 		long allIn = 0L;
 		long allOut = 0L;
-		boolean active = true;
-		if (userActiveData != null) {
-			if (userActiveData.getMvalue() != null) {
-				if (userActiveData.getMvalue() == "1"
-						|| userActiveData.getMvalue() == "TRUE"
-						|| userActiveData.getMvalue() == "true") {
-					active = true;
-				} else {
-					active = false;
-				}
-			} else {
-				active = false;
-			}
-		} else {
-			active = false;
-		}
+		long dataRemain = allPurchasedData - allIn - allOut;
+		List<MyazureData> userdatas = myazureDataService
+				.findMyazureDataByMkeyStartingWith("ESP_TrafficInformation_"
+						+ username + "_");
 		if (userdatas != null) {
 			if (userdatas.size() < 1) {
 				myazureDataService.save("ALL_DATA_IN_" + username, "" + allIn);
 				myazureDataService
 						.save("ALL_DATA_OUT_" + username, "" + allOut);
-				myazureDataService.save("ALL_DATA_" + username,
-						S.toStroageString(allOut + allIn));
-				userdata = new UserData(username, 0, 0, allPurchasedData);
+				myazureDataService.save("ALL_DATA_" + username, ""
+						+ (allOut + allIn) + "");
 			} else {
 				List<TrafficData> userTrafficDatas = new ArrayList<TrafficData>();
 				for (MyazureData myazureData : userdatas) {
@@ -154,37 +137,37 @@ public class VPNTrafficeController {
 						userdata.getUsageData().add(trafficData);
 					}
 				}
+				dataRemain = VPNUserController.FREE_USER_DATA
+						+ allPurchasedData - allIn - allOut;
 				userdata = new UserData(username, allOut, allIn,
 						allPurchasedData);
 				myazureDataService.save("ALL_DATA_IN_" + username, "" + allIn);
 				myazureDataService
 						.save("ALL_DATA_OUT_" + username, "" + allOut);
-				myazureDataService.save("ALL_DATA_" + username,
-						S.toStroageString(allOut + allIn));
-				LOG.debug(username + " USED:"
-						+ S.toStroageString(allOut + allIn));
+				myazureDataService.save("ALL_DATA_" + username, ""
+						+ (allOut + allIn) + "");
+				myazureDataService.save("DATA_REMAIN_" + username, ""
+						+ dataRemain + "");
 			}
 		}
-		userdata.setActive(active);
+		userdata = new UserData(username, allOut, allIn, allPurchasedData);
+		userdata.setActive(VPNUserController.users.containsKey(username));
 		return userdata;
 	}
 
 	private long getUserPurchaseData(String username) {
 		List<MyazureData> dataPurchased = myazureDataService
 				.findMyazureDataByMkeyStartingWith(username + "_Purchased_");
-		if (dataPurchased.size() < 1) {
-			myazureDataService.save(
-					username + "_Purchased_" + System.currentTimeMillis(),
-					"10737418240");
-		}
-		dataPurchased = myazureDataService
-				.findMyazureDataByMkeyStartingWith(username + "_Purchased_");
 		long allPurchasedData = 0L;
 		for (MyazureData myazureData : dataPurchased) {
+			if (myazureData.getMkey().equals(username + "_Purchased_0")) {
+				continue;
+			}
 			allPurchasedData += Long.valueOf(myazureData.getMvalue());
 		}
 		myazureDataService.save(username + "_Purchased", "" + allPurchasedData
 				+ "");
 		return allPurchasedData;
 	}
+
 }
