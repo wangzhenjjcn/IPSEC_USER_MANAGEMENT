@@ -27,7 +27,7 @@ public class TrafficData {
 	@SuppressWarnings("deprecation")
 	public TrafficData(String trafficDataLine) {
 		if (trafficDataLine.contains("ESP traffic information")
-				&& trafficDataLine.contains("xauth-psk")) {
+				&& trafficDataLine.contains("xauth-psk")&&trafficDataLine.startsWith("/")) {
 			try {
 				this.username = trafficDataLine.split("XAUTHuser=")[1].trim();
 				this.dataOut = trafficDataLine.split("out=")[1].split(" ")[0]
@@ -79,6 +79,32 @@ public class TrafficData {
 			this.dataIn = data.dataIn;
 			this.connetTime = data.connetTime;
 			this.linkId = data.linkId;
+		}else if (trafficDataLine.contains("ESP traffic information")
+				&& trafficDataLine.contains("xauth-psk")&&!trafficDataLine.startsWith("/")) {
+			try {
+				this.username = trafficDataLine.split("XAUTHuser=")[1].trim();
+				this.dataOut = trafficDataLine.split("out=")[1].split(" ")[0]
+						.trim();
+				this.dataIn = trafficDataLine.split("in=")[1].split(" ")[0]
+						.trim();
+				this.connetIp = "";
+				if (trafficDataLine.split("xauth-psk")[1].split("#")[0]
+						.contains(".")) {
+					this.connetIp = trafficDataLine.split("xauth-psk")[1]
+							.split("]")[1].split(" #")[0].trim();
+				}
+				Date date = new SimpleDateFormat("MMM d HH:mm:ss",
+						Locale.ENGLISH).parse(trafficDataLine
+						.substring(0,
+								trafficDataLine.indexOf("Myazure") - 1)
+						.replace("  ", " ").toString());
+				date.setYear(new Date(System.currentTimeMillis()).getYear());
+				this.connetTime = (date.getTime() + "").substring(0, 10);
+				this.linkId = trafficDataLine.split("#")[1].split(":")[0]
+						.trim();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

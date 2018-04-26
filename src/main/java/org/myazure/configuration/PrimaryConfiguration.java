@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration("PrimaryConfiguration")
 @EnableCaching
 public class PrimaryConfiguration {
-	
 	
 	@Value("${server.port}")
 	private String serverPort;
@@ -43,19 +42,6 @@ public class PrimaryConfiguration {
 	private String encodeToken;
 	@Value("${encode.key}")
 	private String encodeKey;
-	@Value("${weixin.serverHost}")
-	private String serverHost;
-	@Value("${weixin.authServerUrl}")
-	private String authServerUrl;
-	@Value("${weixin.tunnelServerUrl}")
-	private String tunnelServerUrl;
-	@Value("${weixin.tunnelSignatureKey}")
-	private String tunnelSignatureKey;
-	@Value("${weixin.networkProxy}")
-	private String networkProxy;
-	@Value("${weixin.networkTimeout}")
-	private int networkTimeout;
-	
 	
 	public PrimaryConfiguration() {
 
@@ -195,53 +181,5 @@ public class PrimaryConfiguration {
 
 	public void setEncodeKey(String encodeKey) {
 		this.encodeKey = encodeKey;
-	}
-
-	public String getServerHost() {
-		return serverHost;
-	}
-
-	public void setServerHost(String serverHost) {
-		this.serverHost = serverHost;
-	}
-
-	public String getAuthServerUrl() {
-		return authServerUrl;
-	}
-
-	public void setAuthServerUrl(String authServerUrl) {
-		this.authServerUrl = authServerUrl;
-	}
-
-	public String getTunnelServerUrl() {
-		return tunnelServerUrl;
-	}
-
-	public void setTunnelServerUrl(String tunnelServerUrl) {
-		this.tunnelServerUrl = tunnelServerUrl;
-	}
-
-	public String getTunnelSignatureKey() {
-		return tunnelSignatureKey;
-	}
-
-	public void setTunnelSignatureKey(String tunnelSignatureKey) {
-		this.tunnelSignatureKey = tunnelSignatureKey;
-	}
-
-	public String getNetworkProxy() {
-		return networkProxy;
-	}
-
-	public void setNetworkProxy(String networkProxy) {
-		this.networkProxy = networkProxy;
-	}
-
-	public int getNetworkTimeout() {
-		return networkTimeout;
-	}
-
-	public void setNetworkTimeout(int networkTimeout) {
-		this.networkTimeout = networkTimeout;
 	}
 }

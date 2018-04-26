@@ -2,24 +2,22 @@ package org.myazure.service;
 
 import java.util.List;
 
-import org.myazure.configuration.PrimaryConfiguration;
+import org.myazure.domain.MyazureData;
 import org.myazure.repository.MyazureDataRepository;
-import org.myazure.vpn.domain.MyazureData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class MyazureDataServiceImpl implements MyazureDataService {
-	@Autowired
-	private PrimaryConfiguration primaryConfiguration;
 
 	@Autowired
 	private final MyazureDataRepository myazureDataRepository;
 
 	@Autowired
-	public MyazureDataServiceImpl(PrimaryConfiguration primaryConfiguration,
+	public MyazureDataServiceImpl(
 			MyazureDataRepository myazureDataRepository) {
-		this.primaryConfiguration = primaryConfiguration;
 		this.myazureDataRepository = myazureDataRepository;
 	}
 

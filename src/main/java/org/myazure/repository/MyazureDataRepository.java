@@ -2,7 +2,7 @@ package org.myazure.repository;
 
 import java.util.List;
 
-import org.myazure.vpn.domain.MyazureData;
+import org.myazure.domain.MyazureData;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

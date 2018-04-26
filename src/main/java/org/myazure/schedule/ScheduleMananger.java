@@ -2,7 +2,6 @@ package org.myazure.schedule;
 
 import java.io.IOException;
 
-import org.myazure.configuration.PrimaryConfiguration;
 import org.myazure.vpn.controller.VPNTrafficeController;
 import org.myazure.vpn.controller.VPNUserController;
 import org.slf4j.Logger;
@@ -16,8 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class ScheduleMananger {
 	@Autowired
-	PrimaryConfiguration primaryConfiguration;
-	@Autowired
 	VPNUserController vpnUserController;
 	@Autowired
 	VPNTrafficeController vpnTrafficeController;
@@ -29,9 +26,7 @@ public class ScheduleMananger {
 
 	}
 
-	public ScheduleMananger(PrimaryConfiguration primaryConfiguration) {
-		this.primaryConfiguration = primaryConfiguration;
-	}
+
 
 	@Scheduled(cron = "0/1 * *  * * ? ")
 	protected void secScanner() {

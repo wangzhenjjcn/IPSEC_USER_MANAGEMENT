@@ -10,37 +10,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import weixin.popular.api.WxaAPI;
-
-@Controller
+@Controller("OrderController")
 public class OrderController {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(OrderController.class);
+	@SuppressWarnings("unused")
+	private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 	@Autowired
-	private PrimaryConfiguration primaryConfiguration;
+	PrimaryConfiguration primaryConfiguration;
 	@Autowired
-	private MyazureDataService myazureDataService;
+	MyazureDataService myazureDataService;
 	@Autowired
-	private VPNTrafficeController vpnTrafficeController;
+	VPNTrafficeController vpnTrafficeController;
 	@Autowired
 	private VPNUserController vpnUserController;
 
 	public OrderController() {
 
 	}
-	
-	public Order creatOrder(String username,String price,String data){
-		
+
+	public Order creatOrder(String username, String price, String data) {
 		return new Order();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

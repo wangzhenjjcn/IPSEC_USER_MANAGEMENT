@@ -36,11 +36,11 @@ public class MPController {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(MPController.class);
 	@Autowired
-	PrimaryConfiguration primaryConfiguration;
-	@Autowired
 	VPNUserController vpnUserController;
 	@Autowired
 	VPNTrafficeController vpnTrafficeController;
+	@Autowired
+	PrimaryConfiguration primaryConfiguration;
 	WXBizMsgCrypt wxBizMsgCrypt = null;
 	private static ExpireKey expireKey = new DefaultExpireKey();
 

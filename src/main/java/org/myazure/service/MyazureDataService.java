@@ -2,7 +2,7 @@ package org.myazure.service;
 
 import java.util.List;
 
-import org.myazure.vpn.domain.MyazureData;
+import org.myazure.domain.MyazureData;
 
 
 public interface MyazureDataService {

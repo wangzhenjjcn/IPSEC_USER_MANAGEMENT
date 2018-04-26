@@ -28,37 +28,30 @@ import com.alibaba.fastjson.JSON;
 
 @Controller
 public class WebController {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(WebController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WebController.class);
 	@Autowired
-	private PrimaryConfiguration primaryConfiguration;
+	PrimaryConfiguration primaryConfiguration;
 	@Autowired
-	private MyazureDataService myazureDataService;
+	MyazureDataService myazureDataService;
 	@Autowired
-	private VPNTrafficeController vpnTrafficeController;
+	VPNTrafficeController vpnTrafficeController;
 	@Autowired
-	private VPNUserController vpnUserController;
+	VPNUserController vpnUserController;
 
 	public WebController() {
 	}
 
 	@RequestMapping(path = "/hongkong/adduser", method = RequestMethod.POST)
 	public void addUser(HttpServletRequest request, HttpServletResponse response) {
-		if (request.getParameter("username") != null
-				&& request.getParameter("passwd") != null
-				&& request.getParameter("data") != null
-				&& request.getParameter("token") != null) {
+		if (request.getParameter("username") != null && request.getParameter("passwd") != null && request.getParameter("data") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
 				String passwd = request.getParameter("passwd");
-				long data = Long.valueOf(request.getParameter("data")
-						.replace("K", "000").replace("M", "000000")
-						.replace("G", "000000000").replace("T", "000000000000")
+				long data = Long.valueOf(request.getParameter("data").replace("K", "000").replace("M", "000000").replace("G", "000000000").replace("T", "000000000000")
 						.replace("B", ""));
 				vpnUserController.addUser(username, passwd);
 				vpnUserController.addUserData(username, data);
-				StatusResponse res = new StatusResponse("AddUser["
-						+ request.getParameter("username") + "]Sucess", true);
+				StatusResponse res = new StatusResponse("AddUser[" + request.getParameter("username") + "]Sucess", true);
 				sentResponse(response, res);
 				LOG.debug("ALLDONE");
 			} catch (Exception e) {
@@ -77,13 +70,11 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/deluser", method = RequestMethod.POST)
 	public void delUser(HttpServletRequest request, HttpServletResponse response) {
-		if (request.getParameter("username") != null
-				&& request.getParameter("token") != null) {
+		if (request.getParameter("username") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
 				vpnUserController.deleteUser(username);
-				StatusResponse res = new StatusResponse("DeleteUser["
-						+ request.getParameter("username") + "]Sucess", true);
+				StatusResponse res = new StatusResponse("DeleteUser[" + request.getParameter("username") + "]Sucess", true);
 				sentResponse(response, res);
 				LOG.debug("ALLDONE");
 			} catch (Exception e) {
@@ -101,17 +92,13 @@ public class WebController {
 	}
 
 	@RequestMapping(path = "/hongkong/moduser", method = RequestMethod.POST)
-	public void modifyUser(HttpServletRequest request,
-			HttpServletResponse response) {
-		if (request.getParameter("username") != null
-				&& request.getParameter("passwd") != null
-				&& request.getParameter("token") != null) {
+	public void modifyUser(HttpServletRequest request, HttpServletResponse response) {
+		if (request.getParameter("username") != null && request.getParameter("passwd") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
 				String passwd = request.getParameter("passwd");
 				vpnUserController.modifyUser(username, passwd);
-				StatusResponse res = new StatusResponse("ModifyUser["
-						+ request.getParameter("username") + "]Sucess", true);
+				StatusResponse res = new StatusResponse("ModifyUser[" + request.getParameter("username") + "]Sucess", true);
 				sentResponse(response, res);
 				LOG.debug("ALLDONE");
 			} catch (Exception e) {
@@ -129,20 +116,14 @@ public class WebController {
 	}
 
 	@RequestMapping(path = "/hongkong/adddata", method = RequestMethod.POST)
-	public void addUserData(HttpServletRequest request,
-			HttpServletResponse response) {
-		if (request.getParameter("username") != null
-				&& request.getParameter("data") != null
-				&& request.getParameter("token") != null) {
+	public void addUserData(HttpServletRequest request, HttpServletResponse response) {
+		if (request.getParameter("username") != null && request.getParameter("data") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
-				long data = Long.valueOf(request.getParameter("data")
-						.replace("K", "000").replace("M", "000000")
-						.replace("G", "000000000").replace("T", "000000000000")
+				long data = Long.valueOf(request.getParameter("data").replace("K", "000").replace("M", "000000").replace("G", "000000000").replace("T", "000000000000")
 						.replace("B", ""));
 				vpnUserController.addUserData(username, data);
-				StatusResponse res = new StatusResponse("AddUserData["
-						+ request.getParameter("username") + "]Sucess", true);
+				StatusResponse res = new StatusResponse("AddUserData[" + request.getParameter("username") + "]Sucess", true);
 				sentResponse(response, res);
 			} catch (Exception e) {
 				StatusResponse res = new StatusResponse(e.getMessage(), false);
@@ -159,8 +140,7 @@ public class WebController {
 	}
 
 	@RequestMapping(path = "/hongkong/search", method = RequestMethod.GET)
-	public void viewAllUser(HttpServletRequest request,
-			HttpServletResponse response) {
+	public void viewAllUser(HttpServletRequest request, HttpServletResponse response) {
 		UsersListResponse res = new UsersListResponse();
 		List<UserData> users = new ArrayList<UserData>();
 		for (String username : VPNUserController.userList) {
@@ -171,29 +151,19 @@ public class WebController {
 	}
 
 	@RequestMapping(path = "/hongkong/addpaydata", method = RequestMethod.POST)
-	public void addPurchasedData(HttpServletRequest request,
-			HttpServletResponse response) {
+	public void addPurchasedData(HttpServletRequest request, HttpServletResponse response) {
 		StatusResponse res = new StatusResponse("缺少参数", false);
-		if (request.getParameter("username") != null
-				&& request.getParameter("pay") != null
-				&& request.getParameter("data") != null
-				&& request.getParameter("orderid") != null
-				&& request.getParameter("paytime") != null
-				&& request.getParameter("token") != null) {
+		if (request.getParameter("username") != null && request.getParameter("pay") != null && request.getParameter("data") != null && request.getParameter("orderid") != null
+				&& request.getParameter("paytime") != null && request.getParameter("token") != null) {
 			String username = request.getParameter("username");
 			String orderId = request.getParameter("orderid");
 			long pay = Long.valueOf(request.getParameter("pay"));
-			long data = Long.valueOf(request.getParameter("data")
-					.replace("K", "000").replace("M", "000000")
-					.replace("G", "000000000").replace("T", "000000000000")
+			long data = Long.valueOf(request.getParameter("data").replace("K", "000").replace("M", "000000").replace("G", "000000000").replace("T", "000000000000")
 					.replace("B", ""));
 			long paytime = Long.valueOf(request.getParameter("paytime"));
-			PurchasedData purchasedData = new PurchasedData(username, pay,
-					paytime, data, orderId);
-			myazureDataService.save(username + "_Purchased" + orderId,
-					JSON.toJSONString(purchasedData));
-			myazureDataService.save("ORDER_"+orderId ,
-					JSON.toJSONString(purchasedData));
+			PurchasedData purchasedData = new PurchasedData(username, pay, paytime, data, orderId);
+			myazureDataService.save(username + "_Purchased" + orderId, JSON.toJSONString(purchasedData));
+			myazureDataService.save("ORDER_" + orderId, JSON.toJSONString(purchasedData));
 			res = new StatusResponse();
 		} else {
 			if (request.getParameter("token") == null) {
@@ -205,14 +175,14 @@ public class WebController {
 	}
 
 	@RequestMapping(path = "/hongkong/userdata", method = RequestMethod.GET)
-	public void viewUserData(HttpServletRequest request,
-			HttpServletResponse response) {
-		if (request.getParameter("username") != null
-				&& request.getParameter("token") != null) {
+	public void viewUserData(HttpServletRequest request, HttpServletResponse response) {
+		if (request.getParameter("username") != null && request.getParameter("token") != null) {
 			String username = request.getParameter("username");
 			UsersListResponse res = new UsersListResponse();
 			List<UserData> users = new ArrayList<UserData>();
-			// users.add(VPNUserController.users.get(username));
+			 users.add(VPNUserController.users.get(username));
+			 
+			 
 			if (users.size() < 1) {
 				long allin = 0;
 				long allout = 0;
@@ -221,8 +191,7 @@ public class WebController {
 				long purchasedDataBytes = 0;
 				for (int i = 0; i < 7; i++) {
 					TrafficData trafficdata = new TrafficData();
-					PurchasedData purchasedData = new PurchasedData(username,
-							12, System.currentTimeMillis(), 2000000L);
+					PurchasedData purchasedData = new PurchasedData(username, 12, System.currentTimeMillis(), 2000000L);
 					trafficdata.setConnetIp("21.23.2.2");
 					trafficdata.setConnetTime("" + System.currentTimeMillis());
 					trafficdata.setDataIn("12312" + i);
@@ -236,8 +205,7 @@ public class WebController {
 					purchasedDataBytes += 2000000L;
 				}
 				users.add(new UserData(username, allout, allin, 22222222222L));
-				users.get(0).setLastLinkDate(
-						new Date(System.currentTimeMillis()));
+				users.get(0).setLastLinkDate(new Date(System.currentTimeMillis()));
 				users.get(0).setActive(true);
 				users.get(0).setPurchasedDataBytes(purchasedDataBytes);
 				users.get(0).setUsageData(usageData);

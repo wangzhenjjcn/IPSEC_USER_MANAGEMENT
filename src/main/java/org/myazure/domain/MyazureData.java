@@ -1,4 +1,4 @@
-package org.myazure.vpn.domain;
+package org.myazure.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
