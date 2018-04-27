@@ -43,6 +43,12 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/adduser", method = RequestMethod.POST)
 	public void addUser(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		if (request.getParameter("username") != null && request.getParameter("passwd") != null && request.getParameter("data") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
@@ -70,6 +76,12 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/deluser", method = RequestMethod.POST)
 	public void delUser(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		if (request.getParameter("username") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
@@ -93,6 +105,12 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/moduser", method = RequestMethod.POST)
 	public void modifyUser(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		if (request.getParameter("username") != null && request.getParameter("passwd") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
@@ -117,6 +135,12 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/adddata", method = RequestMethod.POST)
 	public void addUserData(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		if (request.getParameter("username") != null && request.getParameter("data") != null && request.getParameter("token") != null) {
 			try {
 				String username = request.getParameter("username");
@@ -141,6 +165,12 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/search", method = RequestMethod.GET)
 	public void viewAllUser(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		UsersListResponse res = new UsersListResponse();
 		List<UserData> users = new ArrayList<UserData>();
 		for (String username : VPNUserController.userList) {
@@ -152,6 +182,12 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/addpaydata", method = RequestMethod.POST)
 	public void addPurchasedData(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		StatusResponse res = new StatusResponse("缺少参数", false);
 		if (request.getParameter("username") != null && request.getParameter("pay") != null && request.getParameter("data") != null && request.getParameter("orderid") != null
 				&& request.getParameter("paytime") != null && request.getParameter("token") != null) {
@@ -176,13 +212,18 @@ public class WebController {
 
 	@RequestMapping(path = "/hongkong/userdata", method = RequestMethod.GET)
 	public void viewUserData(HttpServletRequest request, HttpServletResponse response) {
+		if (!auth(request.getParameter("token"))) {
+			StatusResponse res = new StatusResponse("缺少参数", false);
+			res = new StatusResponse("授权失败", false);
+			sentResponse(response, res);
+			return;
+		}
 		if (request.getParameter("username") != null && request.getParameter("token") != null) {
 			String username = request.getParameter("username");
 			UsersListResponse res = new UsersListResponse();
 			List<UserData> users = new ArrayList<UserData>();
-			 users.add(VPNUserController.users.get(username));
-			 
-			 
+			users.add(VPNUserController.users.get(username));
+
 			if (users.size() < 1) {
 				long allin = 0;
 				long allout = 0;
@@ -231,6 +272,18 @@ public class WebController {
 		} catch (IOException e) {
 			LOG.debug(e.getMessage());
 			e.printStackTrace();
+		}
+	}
+	protected   boolean auth(String token) {
+		String authData = myazureDataService.getValue(token);
+		if (authData==null) {
+			return false;
+		}
+		if (authData.equals("21h8930n5y3842d34u89SE7RV8989Y89HY789Y89hny780YN)789yN780Y780yn&*o(byn&*ybn&*)y&*)yne&*rerwer9IERYT8J9F53N")) {
+			LOG.debug("Auth Sucess");
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
