@@ -1,6 +1,5 @@
 package org.myazure.schedule;
 
-import java.io.IOException;
 
 import org.myazure.vpn.controller.VPNTrafficeController;
 import org.myazure.vpn.controller.VPNUserController;
@@ -48,11 +47,11 @@ public class ScheduleMananger {
 	@Scheduled(cron = "0 0/30 *  * * ? ")
 	protected void halfHourScanner() {
 		vpnTrafficeController.calculateAllUserData();
-		try {
-			vpnUserController.disableAllOverUseUsers();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			vpnUserController.disableAllOverUseUsers();
+//		} catch (IOException | InterruptedException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Scheduled(cron = "0 0 0/1  * * ? ")

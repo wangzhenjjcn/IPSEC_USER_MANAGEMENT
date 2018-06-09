@@ -8,6 +8,11 @@ import org.myazure.utils.S;
 
 public class UserData {
 	private String username = "default";
+	private String passwd = "123456";
+	private String passwdEncode = "$1$.ov.fnld$UjN/O5aFVcDSIjAU4XI8W1";
+	private boolean ipsec = false;
+	private boolean pptp = false;
+	private boolean l2tp = false;
 	private Date lastLinkDate;
 	private long dataOutBytes = 0L;
 	private long dataInBytes = 0L;
@@ -82,6 +87,46 @@ public class UserData {
 		this.purchasedDataBytes = purchasedDataBytes;
 	}
 
+	public boolean isIpsec() {
+		return ipsec;
+	}
+
+	public void setIpsec(boolean ipsec) {
+		this.ipsec = ipsec;
+	}
+
+	public boolean isPptp() {
+		return pptp;
+	}
+
+	public void setPptp(boolean pptp) {
+		this.pptp = pptp;
+	}
+
+	public boolean isL2tp() {
+		return l2tp;
+	}
+
+	public void setL2tp(boolean l2tp) {
+		this.l2tp = l2tp;
+	}
+
+	public String getPasswd() {
+		return passwd;
+	}
+
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
+	}
+
+	public String getPasswdEncode() {
+		return passwdEncode;
+	}
+
+	public void setPasswdEncode(String passwdEncode) {
+		this.passwdEncode = passwdEncode;
+	}
+
 	public Date getLastLinkDate() {
 		return lastLinkDate;
 	}
@@ -123,7 +168,10 @@ public class UserData {
 		str.append("User:").append(username).append(" ").append("Paid:")
 				.append(S.toStroageString(purchasedDataBytes)).append(" ")
 				.append("AllUsed:").append(S.toStroageString(allDataBytes))
-				.append(" ");
+				.append(" ").append("EnableIpsec:")
+				.append(ipsec ? "Yes" : "No").append("EnablePPTP:")
+				.append(pptp ? "Yes" : "No").append("EnableL2TP:")
+				.append(l2tp ? "Yes" : "No");
 		return str.toString();
 	}
 

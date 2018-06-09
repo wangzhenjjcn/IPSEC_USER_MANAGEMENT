@@ -41,7 +41,7 @@ public class WebController {
 	public WebController() {
 	}
 
-	@RequestMapping(path = "/hongkong/adduser", method = RequestMethod.POST)
+	@RequestMapping(path = "/adduser", method = RequestMethod.POST)
 	public void addUser(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);
@@ -53,10 +53,14 @@ public class WebController {
 			try {
 				String username = request.getParameter("username");
 				String passwd = request.getParameter("passwd");
+				String timeLimit= request.getParameter("time");
 				long data = Long.valueOf(request.getParameter("data").replace("K", "000").replace("M", "000000").replace("G", "000000000").replace("T", "000000000000")
 						.replace("B", ""));
 				vpnUserController.addUser(username, passwd);
 				vpnUserController.addUserData(username, data);
+				if (request.getParameter("time")!=null) {
+					vpnUserController.addUserLimitTime(username, timeLimit);
+				}
 				StatusResponse res = new StatusResponse("AddUser[" + request.getParameter("username") + "]Sucess", true);
 				sentResponse(response, res);
 				LOG.debug("ALLDONE");
@@ -74,7 +78,7 @@ public class WebController {
 		return;
 	}
 
-	@RequestMapping(path = "/hongkong/deluser", method = RequestMethod.POST)
+	@RequestMapping(path = "/deluser", method = RequestMethod.POST)
 	public void delUser(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);
@@ -103,7 +107,7 @@ public class WebController {
 		return;
 	}
 
-	@RequestMapping(path = "/hongkong/moduser", method = RequestMethod.POST)
+	@RequestMapping(path = "/moduser", method = RequestMethod.POST)
 	public void modifyUser(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);
@@ -133,7 +137,7 @@ public class WebController {
 		return;
 	}
 
-	@RequestMapping(path = "/hongkong/adddata", method = RequestMethod.POST)
+	@RequestMapping(path = "/adddata", method = RequestMethod.POST)
 	public void addUserData(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);
@@ -163,7 +167,7 @@ public class WebController {
 		return;
 	}
 
-	@RequestMapping(path = "/hongkong/search", method = RequestMethod.GET)
+	@RequestMapping(path = "/search", method = RequestMethod.GET)
 	public void viewAllUser(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);
@@ -173,14 +177,14 @@ public class WebController {
 		}
 		UsersListResponse res = new UsersListResponse();
 		List<UserData> users = new ArrayList<UserData>();
-		for (String username : VPNUserController.userList) {
+		for (String username : VPNUserController.ipsecUserList) {
 			users.add(VPNUserController.users.get(username));
 		}
 		res.setUsers(users);
 		sentResponse(response, res);
 	}
 
-	@RequestMapping(path = "/hongkong/addpaydata", method = RequestMethod.POST)
+	@RequestMapping(path = "/addpaydata", method = RequestMethod.POST)
 	public void addPurchasedData(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);
@@ -210,7 +214,7 @@ public class WebController {
 		return;
 	}
 
-	@RequestMapping(path = "/hongkong/userdata", method = RequestMethod.GET)
+	@RequestMapping(path = "/userdata", method = RequestMethod.GET)
 	public void viewUserData(HttpServletRequest request, HttpServletResponse response) {
 		if (!auth(request.getParameter("token"))) {
 			StatusResponse res = new StatusResponse("缺少参数", false);

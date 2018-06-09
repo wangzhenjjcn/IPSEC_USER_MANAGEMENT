@@ -1,5 +1,7 @@
 package org.myazure.utils;
 
+import java.sql.Date;
+
 public class S {
 	public S() {
 
@@ -24,6 +26,27 @@ public class S {
 //				.replace("3", "MB").replace("4", "GB")
 //				.replace("5", "TB"));
 		return dataBuffer.toString();
+	}
+
+	public static String toLongTimeFromNow(String timeLimit) {
+		String timeString=timeLimit;
+		timeString=timeString.toLowerCase().replace(" ", "").replace("-","").replace("(", "").replace(")", "").replace("$", "").replace("*","");
+		if (timeLimit.contains("d")|| timeLimit.contains("day")) {
+			String time=timeLimit.replace("day","").replace("d", "");
+			Long day= Long.valueOf(time)* 24 * 60 * 60 * 1000L+System.currentTimeMillis();
+			return day+"";
+		} 
+		if (timeLimit.contains("m")|| timeLimit.contains("month")) {
+			String time=timeLimit.replace("month","").replace("m", "");
+			Long day= Long.valueOf(time)*30 * 24 * 60 * 60 * 1000L+System.currentTimeMillis();
+			return day+"";
+		} 
+		if (timeLimit.contains("y")|| timeLimit.contains("year")) {
+			String time=timeLimit.replace("year","").replace("y", "");
+			Long day= Long.valueOf(time)*365 * 24 * 60 * 60 * 1000L+System.currentTimeMillis();
+			return day+"";
+		} 
+		return ""+System.currentTimeMillis();
 	}
 
 }

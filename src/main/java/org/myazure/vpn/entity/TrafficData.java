@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.aspectj.weaver.ast.And;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,6 +106,21 @@ public class TrafficData {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}else if (trafficDataLine.contains("pptp")&&trafficDataLine.contains("ESP traffic information")) {
+//			pptpLinkLogout time=1528508000000  username=wangzhen  dataIn=888066  dataOut=234970  clientIP=49.64.163.51 time=6  assignIP=192.168.77.2
+
+			this.username = trafficDataLine.split("username=")[1].split(" ")[0]
+					.trim();
+			this.connetIp = trafficDataLine.split("clientIP=")[1].split(" ")[0]
+					.trim();
+			this.dataOut = trafficDataLine.split("dataOut=")[1].split(" ")[0]
+					.trim();
+			this.dataIn = trafficDataLine.split("dataIn=")[1].split(" ")[0]
+					.trim();
+			this.connetTime =trafficDataLine.split("time=")[1].split(" ")[0]
+					.trim();
+			this.linkId = trafficDataLine.split("assignIP=")[1].split(" ")[0]
+					.trim();
 		}
 
 	}

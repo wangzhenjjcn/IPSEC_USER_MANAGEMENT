@@ -88,7 +88,7 @@ public class VPNTrafficeController {
 	public  Map<String, UserData> calculateAllUserData() {
 		readTrafficNow();
 		Map<String, UserData> userData = new HashMap<String, UserData>();
-		for (String string : VPNUserController.userList) {
+		for (String string : VPNUserController.ipsecUserList) {
 			userData.put(string, calculateUserTrafficData(string));
 		}
 		VPNUserController.users = userData;

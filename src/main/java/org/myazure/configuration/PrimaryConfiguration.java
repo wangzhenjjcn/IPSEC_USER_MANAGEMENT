@@ -23,7 +23,9 @@ public class PrimaryConfiguration {
 	@Value("${mail.alert.recievers}")
 	private String mailAlertRecivers;
 	@Value("${vpn.ipsec.passwdFile}")
-	private String passwdFilePath;
+	private String ipsecPasswdFilePath;
+	@Value("${vpn.pptp.passwdFile}")
+	private String pptpPasswdFilePath;
 	@Value("${vpn.traffic.tmpFile}")
 	private String trafficeFilePath;
 	@Value("${vpn.trafficing.tmpFile}")
@@ -103,12 +105,22 @@ public class PrimaryConfiguration {
 		this.mailAlertRecivers = mailAlertRecivers;
 	}
 
-	public String getPasswdFilePath() {
-		return passwdFilePath;
+ 
+
+	public String getIpsecPasswdFilePath() {
+		return ipsecPasswdFilePath;
 	}
 
-	public void setPasswdFilePath(String passwdFilePath) {
-		this.passwdFilePath = passwdFilePath;
+	public void setIpsecPasswdFilePath(String ipsecPasswdFilePath) {
+		this.ipsecPasswdFilePath = ipsecPasswdFilePath;
+	}
+
+	public String getPptpPasswdFilePath() {
+		return pptpPasswdFilePath;
+	}
+
+	public void setPptpPasswdFilePath(String pptpPasswdFilePath) {
+		this.pptpPasswdFilePath = pptpPasswdFilePath;
 	}
 
 	public String getTrafficeFilePath() {
