@@ -43,7 +43,11 @@ public class VPNTrafficeController {
 					continue;
 				}
 				TrafficData data = new TrafficData(string);
-				myazureDataService.save(new MyazureData("ESP_TrafficInformation_" + data.getUsername() + "_" + data.getConnetTime(), JSON.toJSONString(data)));
+				if(data.getConnetTime()!=null){
+					myazureDataService.save(new MyazureData("ESP_TrafficInformation_" + data.getUsername() + "_" + data.getConnetTime(), JSON.toJSONString(data)));
+				}else {
+					myazureDataService.save(new MyazureData("ESP_TrafficInformation_" + data.getUsername() + "_" + JSON.toJSONString(data).hashCode(), JSON.toJSONString(data)));
+				}
 			}
 		} catch (Exception e) {
 			LOG.debug("Run this [" + saveHistoryCommand + "] Err");

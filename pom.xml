@@ -4,7 +4,7 @@
 
   <groupId>org.myazure</groupId>
   <artifactId>vpn</artifactId>
-  <version>V2.0.0.2</version>
+  <version>V2.0.1.1</version>
   <packaging>jar</packaging>
 
   <name>vpn</name>

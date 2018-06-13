@@ -153,10 +153,8 @@ public class VPNUserController {
 	}
 
 	public void addUserLimitTime(String username, String timeLimit) {
-		if (VPNUserController.users.containsKey(username)) {
 			String time = S.toLongTimeFromNow(timeLimit);
 			myazureDataService.save("TIME_LIMITED_" + username + "", time);
-		}
 	}
 
 	private void deleteIpsecUserHistoryData(String username) {
