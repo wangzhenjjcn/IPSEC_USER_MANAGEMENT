@@ -18,6 +18,8 @@ import org.myazure.vpn.entity.UserData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
+
 @Controller("VPNUserController")
 public class VPNUserController {
 	@Autowired
@@ -100,11 +102,18 @@ public class VPNUserController {
 		myazureDataService
 				.deleteAllMyazureDatasByKeyStartWith("ACTIVE_PPTP_USER_");
 		for (String string : userPasswdLines) {
-			String infoString = string.trim();
+			String infoString = string;
+			infoString=infoString.trim();
+			LOG.debug("+++++++++++++infoString+++"+JSON.toJSONString(infoString));
 			String[] infStrings = infoString.split("\"");
-			if (infStrings.length == 4 && infoString.contains("pptpd")) {
+			LOG.debug("+++++++++++++infStrings+++"+JSON.toJSONString(infStrings)+"============"+infStrings.length );
+			for (String string2 : infStrings) {
+				LOG.debug("+++++++++++++infStrings+++"+string2);
+			}
+			if (infStrings.length == 5 && infoString.contains("pptpd")) {
 				String usernameString = infStrings[1];
 				String passwdString = infStrings[3];
+				LOG.debug("+++++++++++++userinfo+++"+string);
 				userList.add(usernameString);
 				userPasswd.put(usernameString, passwdString);
 				try {
@@ -116,8 +125,12 @@ public class VPNUserController {
 					continue;
 				}
 			}
+			
+			LOG.debug("+++++++++++++userList+++"+userList.size());
 		}
 		VPNUserController.pptpUserList = userList;
+		
+		LOG.debug("+++++++++++++pptpUserList+++"+ VPNUserController.pptpUserList.size());
 		VPNUserController.userPasswd = userPasswd;
 	}
 
@@ -230,7 +243,7 @@ public class VPNUserController {
 		for (String string : VPNUserController.ipsecUserList) {
 			fileStringBuffer.append(string).append(":")
 					.append(VPNUserController.userEncodePasswd.get(string))
-					.append(":xauth-psk").append("\n");
+					.append(":xauth-psk").append(System.getProperty("line.separator"));
 		}
 		F.writeStringToFile(fileStringBuffer.toString(),
 				primaryConfiguration.getIpsecPasswdFilePath());
@@ -238,12 +251,14 @@ public class VPNUserController {
 
 	private void writeUsersToPptpPassWdFile() throws IOException,
 			InterruptedException {
+		LOG.debug("===============PPTPUSERS:"+JSON.toJSONString(VPNUserController.pptpUserList));
 		StringBuffer fileStringBuffer = new StringBuffer();
 		for (String string : VPNUserController.pptpUserList) {
-			fileStringBuffer.append("\"").append(string).append("\"  pptpd \"")
+			fileStringBuffer.append("\"").append(string).append("\" pptpd \"")
 					.append(VPNUserController.userPasswd.get(string))
-					.append("\"  *").append("\n");
+					.append("\" *").append(System.getProperty("line.separator"));
 		}
+		LOG.debug("===============fileStringBuffer:==============="+fileStringBuffer.toString() );
 		F.writeStringToFile(fileStringBuffer.toString(),
 				primaryConfiguration.getPptpPasswdFilePath());
 	}

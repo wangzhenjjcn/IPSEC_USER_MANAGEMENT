@@ -19,10 +19,10 @@ public class TokenManagerListener implements ServletContextListener {
 	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(TokenManagerListener.class);
-	@Value("${weixin.compAppId}")
-	private String appid;
-	@Value("${weixin.compAppSecret}")
-	private String secret;
+//	@Value("${weixin.compAppId}")
+//	private String appid;
+//	@Value("${weixin.compAppSecret}")
+//	private String secret;
 
 	
 	@Override
